@@ -246,8 +246,9 @@ function renderResults() {
         <button class="copy-btn" style="border-color:${meta.color};color:${meta.color}" onclick="copyTs(this,'${formatTime(clip.start_seconds)}')">Copy Timestamp</button>
       </div>
       <div class="clip-meta-row">
+        ${clip.opening_words ? `<div class="clip-meta-item"><span class="meta-label">🔍 FIND IT</span><span class="meta-text">"${clip.opening_words}"</span></div>` : ''}
         ${clip.hook_suggestion ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.hook_suggestion}"</span></div>` : ''}
-        ${clip.payoff ? `<div class="clip-meta-item"><span class="meta-label">🎯 PAYOFF</span><span class="meta-text">${clip.payoff}</span></div>` : ''}
+        ${clip.payoff ? `<div class="clip-meta-item"><span class="meta-label">🎯 PAYOFF</span><span class="meta-text">"${clip.payoff}"</span></div>` : ''}
         ${clip.cta_suggestion ? `<div class="clip-meta-item"><span class="meta-label">📣 CTA</span><span class="meta-text">"${clip.cta_suggestion}"</span></div>` : ''}
       </div>
     `;
@@ -273,9 +274,10 @@ function exportSheet() {
       `CLIP #${String(i+1).padStart(2,'0')} — ${c.title}`,
       `Type: ${c.type.replace('_',' ').toUpperCase()} | Score: ${c.viral_score}/10`,
       `Timestamp: ${formatTime(c.start_seconds)} → ${formatTime(c.end_seconds || c.start_seconds+120)}`,
+      `Find it: "${c.opening_words}"`,
       `Why: ${c.why_viral}`,
       `Hook: "${c.hook_suggestion}"`,
-      `Payoff: ${c.payoff}`,
+      `Payoff: "${c.payoff}"`,
       `CTA: "${c.cta_suggestion}"`,
       '',
     ].join('\n')),

@@ -221,20 +221,46 @@ Penalize: resolves immediately (cap 5), generic without ICT/prop firm specificit
 ## TRANSCRIPT
 ${transcript.slice(0, 18000)}
 
-Identify TOP 6-10 clips. Convert timestamps to total seconds from start of video.
+You are scanning a live futures trading stream VOD by "Trading Patiently" (Bam) to find the most HOOKY, scroll-stopping viral moments. These will become short-form clips on TikTok, YouTube Shorts, Instagram Reels, and all short-form platforms.
+
+## YOUR ONLY JOB
+Find the 6-10 moments in this stream that would make someone stop scrolling instantly. That's it. Don't worry about clip length, structure, or format — just find the moments that have the strongest hook potential.
+
+## WHAT MAKES A MOMENT HOOKY
+A hooky moment is one where a complete stranger, scrolling through their feed, stops within 3 seconds because something made them think, feel, or react. Look for:
+
+- **Raw emotional reactions** — Bam winning big, losing big, celebrating, frustrated, shocked, hyped. Unscripted and real.
+- **Bold statements** — Something contrarian, surprising, or that challenges what traders believe. "Everyone is doing this wrong." "I just made $X in 2 minutes." "This is why you keep blowing accounts."
+- **Live predictions playing out** — Bam calls a move out loud, then it happens in real time while he's talking. Pure tension and payoff.
+- **Pattern interrupts** — Something unexpected, loud, or jarring that breaks the monotony of a trading stream.
+- **Relatable prop firm pain** — A moment every funded trader has felt: near drawdown, a stop hunt, a perfect setup that gets stopped out, finally hitting a target after grinding.
+- **"I can't believe that just happened" moments** — Price does exactly what Bam said, or the complete opposite at the worst time.
+
+## SCORING (1-10)
+Score purely on hook strength — how hard does this moment stop the scroll in the first 3 seconds?
+- 9-10: Someone who has never seen Bam stops scrolling immediately
+- 7-8: Strong hook, most viewers stop
+- 5-6: Decent moment but requires context to appreciate
+- Below 5: Don't include it
+
+## OUTPUT
+Convert timestamps to total seconds from start of video.
+
+CRITICAL: "opening_words", "hook_suggestion", and "payoff" must be Bam's EXACT verbatim words copied from the transcript — word for word. The editor uses these to find and cut the clip in the video. Do not paraphrase.
 
 For each clip return:
-- "title": curiosity-gap title, max 8 words, no punctuation
-- "type": one of "prediction", "entry_exit", "prop_firm", "reaction", "teaching"
-- "start_seconds": integer (start a few seconds before the hook)
-- "end_seconds": integer
+- "title": punchy viral caption, max 8 words, no punctuation, written like it would appear as a TikTok caption
+- "type": one of "reaction", "prediction", "teaching", "prop_firm", "entry_exit"
+- "start_seconds": integer (a few seconds before the hooky moment)
+- "end_seconds": integer (after the natural payoff)
 - "viral_score": integer 1-10
-- "why_viral": one sentence naming the Hook → Retain → Reward arc
-- "hook_suggestion": exact words or text overlay for the first 3 seconds
-- "payoff": one sentence describing the climax moment the editor builds toward
-- "cta_suggestion": natural CTA driving to Bam's YouTube live stream
+- "why_viral": one sentence — the specific thing that makes this moment stop the scroll
+- "opening_words": Bam's EXACT verbatim first words at start_seconds (10-15 words) so editor can search and find the spot instantly
+- "hook_suggestion": Bam's EXACT verbatim words that are the hook of this clip
+- "payoff": Bam's EXACT verbatim words at the payoff moment
+- "cta_suggestion": a CTA that fits the energy of this clip, driving to Bam's YouTube live stream
 
-Also return "stream_title": curiosity-gap headline for the stream highlight reel.
+Also return "stream_title": an emotionally charged, curiosity-gap title for this stream's highlight reel.
 
 Return ONLY valid JSON, no markdown:
 {"stream_title": "...", "clips": [...]}`,
