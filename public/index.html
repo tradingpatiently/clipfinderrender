@@ -140,11 +140,14 @@
 
 <script>
 const TYPE_META = {
-  prediction: { label: 'Live Prediction',  color: '#ce93d8', icon: '📈' },
-  entry_exit: { label: 'Trade Entry/Exit', color: '#00ff87', icon: '⚡' },
-  reaction:   { label: 'Reaction',         color: '#ff6b35', icon: '🔥' },
-  teaching:   { label: 'Teaching',         color: '#4fc3f7', icon: '🎯' },
-  prop_firm:  { label: 'Prop Firm',        color: '#ffd700', icon: '💰' },
+  prediction:  { label: 'Prediction',      color: '#ce93d8', icon: '📈' },
+  entry_exit:  { label: 'Trade Entry/Exit', color: '#00ff87', icon: '⚡' },
+  reaction:    { label: 'Reaction',         color: '#ff6b35', icon: '🔥' },
+  teaching:    { label: 'Teaching',         color: '#4fc3f7', icon: '🎯' },
+  prop_firm:   { label: 'Prop Firm',        color: '#ffd700', icon: '💰' },
+  tension:     { label: 'Tension',          color: '#ff6b35', icon: '😬' },
+  mistake:     { label: 'Mistake',          color: '#ff4444', icon: '❌' },
+  personality: { label: 'Personality',      color: '#00ff87', icon: '😂' },
 };
 let currentClips = [], currentTitle = '', selectedFile = null;
 
@@ -229,14 +232,20 @@ function renderResults() {
     const card = document.createElement('div');
     card.className = 'clip-card';
     card.style.setProperty('--accent', meta.color);
+    const whyText = clip.why_clip || clip.why_viral || '';
+    const hookScore = clip.hook_strength || clip.viral_score || '?';
+    const hookText = clip.suggested_hook || clip.hook_suggestion || '';
+    const storyText = typeof clip.story_structure === 'object'
+      ? Object.values(clip.story_structure).join(' → ')
+      : (clip.story_structure || '');
     card.innerHTML = `
       <div class="clip-header">
         <div class="clip-index">#${String(i+1).padStart(2,'0')}</div>
         <div class="clip-badge" style="color:${meta.color};border-color:${meta.color}">${meta.icon} ${meta.label}</div>
-        <div class="clip-viral-score"><span class="viral-label">Hook</span><span class="viral-value" style="color:${meta.color}">${clip.hook_strength}/10</span></div>
+        <div class="clip-viral-score"><span class="viral-label">Hook</span><span class="viral-value" style="color:${meta.color}">${hookScore}/10</span></div>
       </div>
       <div class="clip-title">${clip.title}</div>
-      <div class="clip-why">${clip.why_clip}</div>
+      <div class="clip-why">${whyText}</div>
       <div class="clip-footer">
         <div class="clip-timestamp">
           <span class="ts-label">START</span>
@@ -248,8 +257,8 @@ function renderResults() {
       <div class="clip-meta-row">
         ${clip.unanswered_question ? `<div class="clip-meta-item"><span class="meta-label">❓ QUESTION</span><span class="meta-text">${clip.unanswered_question}</span></div>` : ''}
         ${clip.opening_words ? `<div class="clip-meta-item"><span class="meta-label">🔍 FIND IT</span><span class="meta-text">"${clip.opening_words}"</span></div>` : ''}
-        ${clip.suggested_hook ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.suggested_hook}"</span></div>` : ''}
-        ${clip.story_structure ? `<div class="clip-meta-item"><span class="meta-label">📖 STORY</span><span class="meta-text">${clip.story_structure}</span></div>` : ''}
+        ${hookText ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${hookText}"</span></div>` : ''}
+        ${storyText ? `<div class="clip-meta-item"><span class="meta-label">📖 STORY</span><span class="meta-text">${storyText}</span></div>` : ''}
       </div>
     `;
     grid.appendChild(card);
