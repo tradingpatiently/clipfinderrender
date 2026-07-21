@@ -233,10 +233,10 @@ function renderResults() {
       <div class="clip-header">
         <div class="clip-index">#${String(i+1).padStart(2,'0')}</div>
         <div class="clip-badge" style="color:${meta.color};border-color:${meta.color}">${meta.icon} ${meta.label}</div>
-        <div class="clip-viral-score"><span class="viral-label">Viral Score</span><span class="viral-value" style="color:${meta.color}">${clip.viral_score}/10</span></div>
+        <div class="clip-viral-score"><span class="viral-label">Hook</span><span class="viral-value" style="color:${meta.color}">${clip.hook_strength}/10</span></div>
       </div>
       <div class="clip-title">${clip.title}</div>
-      <div class="clip-why">${clip.why_viral}</div>
+      <div class="clip-why">${clip.why_clip}</div>
       <div class="clip-footer">
         <div class="clip-timestamp">
           <span class="ts-label">START</span>
@@ -246,11 +246,10 @@ function renderResults() {
         <button class="copy-btn" style="border-color:${meta.color};color:${meta.color}" onclick="copyTs(this,'${formatTime(clip.start_seconds)}')">Copy Timestamp</button>
       </div>
       <div class="clip-meta-row">
-        ${clip.triggers && clip.triggers.length ? `<div class="clip-meta-item"><span class="meta-label">🧠 TRIGGERS</span><span class="meta-text">${clip.triggers.map(t => t.replace(/_/g,' ')).join(' · ')}</span></div>` : ''}
+        ${clip.unanswered_question ? `<div class="clip-meta-item"><span class="meta-label">❓ QUESTION</span><span class="meta-text">${clip.unanswered_question}</span></div>` : ''}
         ${clip.opening_words ? `<div class="clip-meta-item"><span class="meta-label">🔍 FIND IT</span><span class="meta-text">"${clip.opening_words}"</span></div>` : ''}
-        ${clip.hook_suggestion ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.hook_suggestion}"</span></div>` : ''}
-        ${clip.payoff ? `<div class="clip-meta-item"><span class="meta-label">🎯 PAYOFF</span><span class="meta-text">"${clip.payoff}"</span></div>` : ''}
-        ${clip.cta_suggestion ? `<div class="clip-meta-item"><span class="meta-label">📣 CTA</span><span class="meta-text">"${clip.cta_suggestion}"</span></div>` : ''}
+        ${clip.suggested_hook ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.suggested_hook}"</span></div>` : ''}
+        ${clip.story_structure ? `<div class="clip-meta-item"><span class="meta-label">📖 STORY</span><span class="meta-text">${clip.story_structure}</span></div>` : ''}
       </div>
     `;
     grid.appendChild(card);
@@ -273,13 +272,13 @@ function exportSheet() {
     '',
     ...currentClips.map((c, i) => [
       `CLIP #${String(i+1).padStart(2,'0')} — ${c.title}`,
-      `Type: ${c.type.replace('_',' ').toUpperCase()} | Score: ${c.viral_score}/10`,
+      `Type: ${c.type.toUpperCase()} | Hook: ${c.hook_strength}/10 | Virality: ${c.virality_potential}/10`,
       `Timestamp: ${formatTime(c.start_seconds)} → ${formatTime(c.end_seconds || c.start_seconds+120)}`,
+      `Unanswered Question: ${c.unanswered_question}`,
       `Find it: "${c.opening_words}"`,
-      `Why: ${c.why_viral}`,
-      `Hook: "${c.hook_suggestion}"`,
-      `Payoff: "${c.payoff}"`,
-      `CTA: "${c.cta_suggestion}"`,
+      `Why: ${c.why_clip}`,
+      `Hook: "${c.suggested_hook}"`,
+      `Story: ${c.story_structure}`,
       '',
     ].join('\n')),
   ];

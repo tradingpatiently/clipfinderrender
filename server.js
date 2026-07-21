@@ -221,93 +221,81 @@ Penalize: resolves immediately (cap 5), generic without ICT/prop firm specificit
 ## TRANSCRIPT
 ${transcript.slice(0, 18000)}
 
-You are scanning a live futures trading stream VOD by "Trading Patiently" (Bam) — a futures day trader who streams ES/NQ live every morning at 9:30am ET using ICT concepts on prop firm accounts. These clips go on TikTok, YouTube Shorts, Instagram Reels, and all short-form platforms.
+You are identifying HIGH-POTENTIAL YouTube Shorts from a trading livestream by "Trading Patiently" (Bam) — a futures day trader who streams ES/NQ live every morning using ICT concepts on prop firm accounts.
 
----
+## YOUR PRIORITY
+Your priority is NOT educational value. Your priority is finding moments that naturally make people want to keep watching.
 
-## YOUR ONLY JOB
-Find the 6-10 moments in this transcript that will stop a complete stranger mid-scroll in the first 3 seconds and make them think "I NEED to know what happens next."
+## HOOK FORMULA
+A good hook should:
+- Introduce the topic immediately
+- Leave the viewer with ONE clear unanswered question
+- Never spoil the outcome
+- Make the viewer NEED to know what happens next
 
-The human brain's Reticular Activating System (RAS) filters thousands of stimuli per second. Your job is to find moments that break through that filter instantly — not by being interesting, but by triggering an unresolved tension the brain must close.
+Ask yourself: "After the first 3-5 seconds, what question is living in the viewer's mind?" If there isn't a clear unanswered question, the clip is weak.
 
----
+## HOOK CHECKLIST
+✓ Introduces the topic immediately
+✓ Creates ONE unanswered question
+✓ Doesn't reveal the outcome
+✓ The rest of the clip naturally answers that question
+✓ Creates curiosity without requiring lots of context
 
-## THE 5 COGNITIVE TRIGGERS — score every clip against these
+The first spoken sentence should ideally be able to serve as the opening of a Short.
 
-The best clips hit multiple triggers simultaneously. The more triggers a moment hits, the stronger the hook.
+## PRIORITIZE moments where Bam:
+- Predicts something
+- Says "Hopefully...", "We'll see...", "I don't know...", "This might...", "I don't like this..."
+- Is uncertain
+- Makes a difficult decision
+- Reacts emotionally
+- Regrets something
+- Laughs
+- Gets frustrated
+- Talks to chat
+- Says something funny or unexpected
+- Makes a mistake
+- Experiences tension before the outcome
+- Shows personality
 
-**1. NOVELTY / PATTERN DISRUPTION**
-Something unexpected, jarring, or different that breaks the pattern of a normal trading stream. A sudden loud reaction, price doing something nobody expected, Bam saying something that contradicts conventional wisdom. The brain is hardwired to notice the unexpected.
+## AVOID moments that:
+- Start with greetings
+- Spend too long explaining concepts
+- Need lots of previous context
+- Reveal the outcome immediately
+- Are mostly educational with little emotion
+- Have no clear story
 
-**2. PERSONAL RELEVANCE**
-The viewer immediately thinks "this is for me." Prop firm traders stop scrolling when they hear: drawdown, consistency rule, funded account, passing an eval, blown account, stop hunt. These words trigger immediate identification.
+## CLIP STRUCTURE — every clip must follow this arc
+Question → Escalation → Payoff
 
-**3. CURIOSITY GAP**
-The space between what the viewer knows and what they want to know. Bam hints at something valuable, surprising, or important without revealing it yet. "Watch what happens here." "This is why most traders fail." "I've never seen this before." The brain craves closure and stays to fill the gap.
+The opening creates curiosity. The middle increases tension. The ending answers the original question.
 
-**4. EMOTIONAL RESONANCE**
-Mirror neurons fire when we see genuine emotion. Bam celebrating a win, frustrated after a stop, shocked by price action, hyped when a prediction plays out — the viewer literally feels what he feels. Raw, unscripted emotion always outperforms polished delivery.
+## SCORING
+Only recommend clips that score at least 8/10 for hook strength and have a complete beginning, middle, and ending. Be extremely selective. It is better to recommend 3 excellent clips than 15 average ones.
 
-**5. AUTHORITY BIAS**
-Specific data, credentials, or results that signal expertise instantly. "I hold 20 funded accounts." "I just made $X in 2 minutes." "This setup has worked every single day this week." Numbers and specificity create credibility in seconds.
-
----
-
-## CLIP STRUCTURE — Hook → Value → Payoff → CTA
-
-**HOOK (0-3 seconds):** The pattern disruption. Must trigger the RAS immediately. An emotional outburst, a bold statement, an unresolved trade, a contrarian claim, a shocking number. Must work for someone who has never seen Bam before and knows nothing about him.
-
-**VALUE / RETAIN (3-20 seconds):** Delivers on the hook's promise while building tension. The viewer must NEED to see what happens next. A trade in progress, a prediction not yet confirmed, a concept building toward a reveal. This is where viewers decide to stay or leave.
-
-**PAYOFF (20+ seconds):** The satisfying moment that closes the loop. Target hit, prediction confirmed, reaction lands, reveal delivered. Must feel earned — the reward for watching.
-
-**CTA (end):** Natural, soft, energy-matched to the clip. Never salesy. Never forced. Drives to Bam's YouTube live stream where they can watch him trade live daily.
-
----
-
-## WHAT TO LOOK FOR IN THE TRANSCRIPT
-
-Highest priority moments:
-- Bam IN a live trade with the outcome unknown — pure unresolved tension
-- Bam making a specific price prediction BEFORE it happens, then it plays out
-- Sudden emotional reactions — celebration, frustration, shock, disbelief
-- Bold contrarian statements about trading, prop firms, or markets
-- Near-drawdown or near-stop-out situations with visible stakes
-- A specific, punchy ICT concept explained in one sentence with a live example
-- Any moment where price does exactly what Bam said — or the complete opposite at the worst time
-
----
-
-## SCORING (1-10)
-Score purely on scroll-stopping power. Ask: would a stranger who has never seen Bam stop scrolling in the first 3 seconds?
-
-Count how many of the 5 cognitive triggers this moment hits:
-- Hits 4-5 triggers: 9-10
-- Hits 3 triggers: 7-8
-- Hits 2 triggers: 5-6
-- Hits 1 trigger: do not include
-
----
+When choosing between an educational clip and a personality-driven, emotional, humorous, tense, or story-based clip, ALWAYS choose the story-based clip.
 
 ## OUTPUT
 Convert timestamps to total seconds from start of video.
 
-CRITICAL: "opening_words", "hook_suggestion", and "payoff" must be Bam's EXACT verbatim words from the transcript, copied word for word. Do not paraphrase. Do not rewrite. The editor uses these to search and find the exact moment in the video.
+CRITICAL: "opening_words" and "suggested_hook" must be Bam's EXACT verbatim words from the transcript, copied word for word. The editor uses these to find the exact moment in the video. Do not paraphrase. Do not rewrite.
 
 For each clip return:
-- "title": punchy TikTok-style caption that opens a curiosity gap, max 8 words, no punctuation
-- "type": one of "reaction", "prediction", "teaching", "prop_firm", "entry_exit"
-- "start_seconds": integer (start just before the hook triggers)
-- "end_seconds": integer (after the payoff closes the loop)
-- "viral_score": integer 1-10
-- "triggers": array of which cognitive triggers this clip hits e.g. ["emotional_resonance", "curiosity_gap"]
-- "why_viral": one sentence — what specific open loop does this create and what makes the viewer unable to scroll past?
+- "title": punchy Short-style caption, max 8 words, no punctuation
+- "type": one of "reaction", "prediction", "tension", "mistake", "personality", "entry_exit"
+- "start_seconds": integer
+- "end_seconds": integer
+- "hook_strength": integer 1-10 (only include if 8+)
+- "virality_potential": integer 1-10
+- "why_clip": one sentence — why this moment is worth clipping
+- "unanswered_question": the exact question living in the viewer's mind after the first 3-5 seconds
 - "opening_words": Bam's EXACT verbatim first words at start_seconds (10-15 words) so editor can find the spot instantly
-- "hook_suggestion": Bam's EXACT verbatim words that serve as the hook
-- "payoff": Bam's EXACT verbatim words at the payoff moment
-- "cta_suggestion": a soft, natural CTA (3-6 words max per the framework) that fits this clip's energy and drives to Bam's YouTube live stream
+- "suggested_hook": Bam's EXACT verbatim words that serve as the opening hook
+- "story_structure": one sentence each for Question, Escalation, and Payoff — what happens in each phase
 
-Also return "stream_title": a curiosity-gap title for the stream highlight reel — hints at something valuable without revealing it, makes a trader think "I need to watch this."
+Also return "stream_title": a curiosity-gap title for this stream's highlight reel.
 
 Return ONLY valid JSON, no markdown:
 {"stream_title": "...", "clips": [...]}`,
