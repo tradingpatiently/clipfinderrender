@@ -246,6 +246,7 @@ function renderResults() {
         <button class="copy-btn" style="border-color:${meta.color};color:${meta.color}" onclick="copyTs(this,'${formatTime(clip.start_seconds)}')">Copy Timestamp</button>
       </div>
       <div class="clip-meta-row">
+        ${clip.triggers && clip.triggers.length ? `<div class="clip-meta-item"><span class="meta-label">🧠 TRIGGERS</span><span class="meta-text">${clip.triggers.map(t => t.replace(/_/g,' ')).join(' · ')}</span></div>` : ''}
         ${clip.opening_words ? `<div class="clip-meta-item"><span class="meta-label">🔍 FIND IT</span><span class="meta-text">"${clip.opening_words}"</span></div>` : ''}
         ${clip.hook_suggestion ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.hook_suggestion}"</span></div>` : ''}
         ${clip.payoff ? `<div class="clip-meta-item"><span class="meta-label">🎯 PAYOFF</span><span class="meta-text">"${clip.payoff}"</span></div>` : ''}

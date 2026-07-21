@@ -221,46 +221,93 @@ Penalize: resolves immediately (cap 5), generic without ICT/prop firm specificit
 ## TRANSCRIPT
 ${transcript.slice(0, 18000)}
 
-You are scanning a live futures trading stream VOD by "Trading Patiently" (Bam) to find the most HOOKY, scroll-stopping viral moments. These will become short-form clips on TikTok, YouTube Shorts, Instagram Reels, and all short-form platforms.
+You are scanning a live futures trading stream VOD by "Trading Patiently" (Bam) — a futures day trader who streams ES/NQ live every morning at 9:30am ET using ICT concepts on prop firm accounts. These clips go on TikTok, YouTube Shorts, Instagram Reels, and all short-form platforms.
+
+---
 
 ## YOUR ONLY JOB
-Find the 6-10 moments in this stream that would make someone stop scrolling instantly. That's it. Don't worry about clip length, structure, or format — just find the moments that have the strongest hook potential.
+Find the 6-10 moments in this transcript that will stop a complete stranger mid-scroll in the first 3 seconds and make them think "I NEED to know what happens next."
 
-## WHAT MAKES A MOMENT HOOKY
-A hooky moment is one where a complete stranger, scrolling through their feed, stops within 3 seconds because something made them think, feel, or react. Look for:
+The human brain's Reticular Activating System (RAS) filters thousands of stimuli per second. Your job is to find moments that break through that filter instantly — not by being interesting, but by triggering an unresolved tension the brain must close.
 
-- **Raw emotional reactions** — Bam winning big, losing big, celebrating, frustrated, shocked, hyped. Unscripted and real.
-- **Bold statements** — Something contrarian, surprising, or that challenges what traders believe. "Everyone is doing this wrong." "I just made $X in 2 minutes." "This is why you keep blowing accounts."
-- **Live predictions playing out** — Bam calls a move out loud, then it happens in real time while he's talking. Pure tension and payoff.
-- **Pattern interrupts** — Something unexpected, loud, or jarring that breaks the monotony of a trading stream.
-- **Relatable prop firm pain** — A moment every funded trader has felt: near drawdown, a stop hunt, a perfect setup that gets stopped out, finally hitting a target after grinding.
-- **"I can't believe that just happened" moments** — Price does exactly what Bam said, or the complete opposite at the worst time.
+---
+
+## THE 5 COGNITIVE TRIGGERS — score every clip against these
+
+The best clips hit multiple triggers simultaneously. The more triggers a moment hits, the stronger the hook.
+
+**1. NOVELTY / PATTERN DISRUPTION**
+Something unexpected, jarring, or different that breaks the pattern of a normal trading stream. A sudden loud reaction, price doing something nobody expected, Bam saying something that contradicts conventional wisdom. The brain is hardwired to notice the unexpected.
+
+**2. PERSONAL RELEVANCE**
+The viewer immediately thinks "this is for me." Prop firm traders stop scrolling when they hear: drawdown, consistency rule, funded account, passing an eval, blown account, stop hunt. These words trigger immediate identification.
+
+**3. CURIOSITY GAP**
+The space between what the viewer knows and what they want to know. Bam hints at something valuable, surprising, or important without revealing it yet. "Watch what happens here." "This is why most traders fail." "I've never seen this before." The brain craves closure and stays to fill the gap.
+
+**4. EMOTIONAL RESONANCE**
+Mirror neurons fire when we see genuine emotion. Bam celebrating a win, frustrated after a stop, shocked by price action, hyped when a prediction plays out — the viewer literally feels what he feels. Raw, unscripted emotion always outperforms polished delivery.
+
+**5. AUTHORITY BIAS**
+Specific data, credentials, or results that signal expertise instantly. "I hold 20 funded accounts." "I just made $X in 2 minutes." "This setup has worked every single day this week." Numbers and specificity create credibility in seconds.
+
+---
+
+## CLIP STRUCTURE — Hook → Value → Payoff → CTA
+
+**HOOK (0-3 seconds):** The pattern disruption. Must trigger the RAS immediately. An emotional outburst, a bold statement, an unresolved trade, a contrarian claim, a shocking number. Must work for someone who has never seen Bam before and knows nothing about him.
+
+**VALUE / RETAIN (3-20 seconds):** Delivers on the hook's promise while building tension. The viewer must NEED to see what happens next. A trade in progress, a prediction not yet confirmed, a concept building toward a reveal. This is where viewers decide to stay or leave.
+
+**PAYOFF (20+ seconds):** The satisfying moment that closes the loop. Target hit, prediction confirmed, reaction lands, reveal delivered. Must feel earned — the reward for watching.
+
+**CTA (end):** Natural, soft, energy-matched to the clip. Never salesy. Never forced. Drives to Bam's YouTube live stream where they can watch him trade live daily.
+
+---
+
+## WHAT TO LOOK FOR IN THE TRANSCRIPT
+
+Highest priority moments:
+- Bam IN a live trade with the outcome unknown — pure unresolved tension
+- Bam making a specific price prediction BEFORE it happens, then it plays out
+- Sudden emotional reactions — celebration, frustration, shock, disbelief
+- Bold contrarian statements about trading, prop firms, or markets
+- Near-drawdown or near-stop-out situations with visible stakes
+- A specific, punchy ICT concept explained in one sentence with a live example
+- Any moment where price does exactly what Bam said — or the complete opposite at the worst time
+
+---
 
 ## SCORING (1-10)
-Score purely on hook strength — how hard does this moment stop the scroll in the first 3 seconds?
-- 9-10: Someone who has never seen Bam stops scrolling immediately
-- 7-8: Strong hook, most viewers stop
-- 5-6: Decent moment but requires context to appreciate
-- Below 5: Don't include it
+Score purely on scroll-stopping power. Ask: would a stranger who has never seen Bam stop scrolling in the first 3 seconds?
+
+Count how many of the 5 cognitive triggers this moment hits:
+- Hits 4-5 triggers: 9-10
+- Hits 3 triggers: 7-8
+- Hits 2 triggers: 5-6
+- Hits 1 trigger: do not include
+
+---
 
 ## OUTPUT
 Convert timestamps to total seconds from start of video.
 
-CRITICAL: "opening_words", "hook_suggestion", and "payoff" must be Bam's EXACT verbatim words copied from the transcript — word for word. The editor uses these to find and cut the clip in the video. Do not paraphrase.
+CRITICAL: "opening_words", "hook_suggestion", and "payoff" must be Bam's EXACT verbatim words from the transcript, copied word for word. Do not paraphrase. Do not rewrite. The editor uses these to search and find the exact moment in the video.
 
 For each clip return:
-- "title": punchy viral caption, max 8 words, no punctuation, written like it would appear as a TikTok caption
+- "title": punchy TikTok-style caption that opens a curiosity gap, max 8 words, no punctuation
 - "type": one of "reaction", "prediction", "teaching", "prop_firm", "entry_exit"
-- "start_seconds": integer (a few seconds before the hooky moment)
-- "end_seconds": integer (after the natural payoff)
+- "start_seconds": integer (start just before the hook triggers)
+- "end_seconds": integer (after the payoff closes the loop)
 - "viral_score": integer 1-10
-- "why_viral": one sentence — the specific thing that makes this moment stop the scroll
-- "opening_words": Bam's EXACT verbatim first words at start_seconds (10-15 words) so editor can search and find the spot instantly
-- "hook_suggestion": Bam's EXACT verbatim words that are the hook of this clip
+- "triggers": array of which cognitive triggers this clip hits e.g. ["emotional_resonance", "curiosity_gap"]
+- "why_viral": one sentence — what specific open loop does this create and what makes the viewer unable to scroll past?
+- "opening_words": Bam's EXACT verbatim first words at start_seconds (10-15 words) so editor can find the spot instantly
+- "hook_suggestion": Bam's EXACT verbatim words that serve as the hook
 - "payoff": Bam's EXACT verbatim words at the payoff moment
-- "cta_suggestion": a CTA that fits the energy of this clip, driving to Bam's YouTube live stream
+- "cta_suggestion": a soft, natural CTA (3-6 words max per the framework) that fits this clip's energy and drives to Bam's YouTube live stream
 
-Also return "stream_title": an emotionally charged, curiosity-gap title for this stream's highlight reel.
+Also return "stream_title": a curiosity-gap title for the stream highlight reel — hints at something valuable without revealing it, makes a trader think "I need to watch this."
 
 Return ONLY valid JSON, no markdown:
 {"stream_title": "...", "clips": [...]}`,
