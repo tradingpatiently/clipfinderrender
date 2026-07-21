@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trading Patiently — Clip Finder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #080a0c; color: #e8e8e8; font-family: 'DM Mono', monospace; min-height: 100vh; }
+    .app { max-width: 780px; margin: 0 auto; padding: 40px 20px 80px; }
+    .header { margin-bottom: 40px; }
+    .header-eyebrow { font-size: 11px; letter-spacing: 0.25em; color: #00ff87; text-transform: uppercase; margin-bottom: 8px; }
+    .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 8vw, 72px); line-height: 0.9; letter-spacing: 0.02em; color: #fff; }
+    .header-title span { color: #00ff87; }
+    .header-sub { margin-top: 12px; font-size: 13px; color: #666; line-height: 1.6; }
+    .section { margin-bottom: 24px; }
+    .field-label { font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 8px; }
+    .dropzone { background: #0e1114; border: 2px dashed #1e2328; border-radius: 6px; padding: 48px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .dropzone:hover, .dropzone.dragover { border-color: #00ff87; background: #0f1612; }
+    .dropzone-icon { font-size: 36px; margin-bottom: 12px; }
+    .dropzone-text { font-size: 13px; color: #888; margin-bottom: 4px; }
+    .dropzone-sub { font-size: 11px; color: #444; }
+    .file-input { display: none; }
+    .file-selected { background: #0e1114; border: 1px solid #00ff8744; border-radius: 6px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .file-info { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .file-icon { font-size: 20px; flex-shrink: 0; }
+    .file-name { font-size: 13px; color: #e8e8e8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-size { font-size: 11px; color: #555; margin-top: 2px; }
+    .file-remove { background: transparent; border: 1px solid #1e2328; color: #888; border-radius: 4px; padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 11px; cursor: pointer; flex-shrink: 0; }
+    .file-remove:hover { border-color: #ff6b6b; color: #ff6b6b; }
+    .analyze-btn { background: #00ff87; color: #080a0c; border: none; border-radius: 4px; padding: 16px 24px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.08em; cursor: pointer; width: 100%; margin-top: 8px; transition: opacity 0.2s, transform 0.1s; }
+    .analyze-btn:hover:not(:disabled) { opacity: 0.85; }
+    .analyze-btn:active:not(:disabled) { transform: scale(0.99); }
+    .analyze-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .loading-state { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 50px 0; margin-top: 24px; }
+    .loading-bar { width: 240px; height: 4px; background: #1a1f24; border-radius: 2px; overflow: hidden; position: relative; }
+    .loading-bar-fill { height: 100%; background: #00ff87; border-radius: 2px; }
+    .loading-bar-fill.indeterminate { width: 40% !important; animation: slide 1.4s ease-in-out infinite; position: absolute; }
+    @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+    .loading-label { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #888; }
+    .loading-step { font-size: 11px; color: #444; max-width: 340px; text-align: center; line-height: 1.6; }
+    .error-box { background: #1a0a0a; border: 1px solid #ff3b3b44; border-radius: 4px; padding: 16px; color: #ff6b6b; font-size: 13px; line-height: 1.6; margin-top: 24px; }
+    .results-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; gap: 16px; flex-wrap: wrap; }
+    .st-label { font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 4px; }
+    .st-value { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #fff; letter-spacing: 0.04em; }
+    .export-btn { background: transparent; border: 1px solid #1e2328; color: #888; border-radius: 4px; padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
+    .export-btn:hover { border-color: #00ff87; color: #00ff87; }
+    .clips-grid { display: flex; flex-direction: column; gap: 16px; }
+    .clip-card { background: #0e1114; border: 1px solid #1e2328; border-radius: 6px; padding: 20px; transition: border-color 0.2s; position: relative; }
+    .clip-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 6px 0 0 6px; background: var(--accent, #00ff87); }
+    .clip-card:hover { border-color: var(--accent, #00ff87); }
+    .clip-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .clip-index { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: #333; min-width: 32px; }
+    .clip-badge { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid; border-radius: 3px; padding: 3px 8px; opacity: 0.85; }
+    .clip-viral-score { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+    .viral-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #444; }
+    .viral-value { font-family: 'Bebas Neue', sans-serif; font-size: 22px; }
+    .clip-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.04em; color: #fff; margin-bottom: 8px; line-height: 1.1; }
+    .clip-why { font-size: 12px; color: #666; line-height: 1.6; margin-bottom: 16px; }
+    .clip-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .clip-timestamp { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+    .ts-label { color: #444; letter-spacing: 0.12em; text-transform: uppercase; }
+    .ts-value { font-size: 14px; font-weight: 500; }
+    .ts-sep { color: #333; }
+    .copy-btn { background: transparent; border: 1px solid; border-radius: 3px; padding: 6px 12px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; transition: opacity 0.2s; text-transform: uppercase; }
+    .copy-btn:hover { opacity: 0.7; }
+    .clip-meta-row { margin-top: 14px; padding-top: 14px; border-top: 1px solid #1a1f24; display: flex; flex-direction: column; gap: 10px; }
+    .clip-meta-item { display: flex; gap: 10px; align-items: flex-start; }
+    .meta-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #444; white-space: nowrap; padding-top: 2px; min-width: 72px; }
+    .meta-text { font-size: 12px; color: #aaa; line-height: 1.5; font-style: italic; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-eyebrow">Trading Patiently</div>
+    <h1 class="header-title">CLIP<br /><span>FINDER</span></h1>
+    <p class="header-sub">Drop your raw stream VOD — the server extracts audio, transcribes it, and finds your best viral moments automatically.</p>
+  </div>
+  <div class="section">
+    <div class="field-label">Stream VOD File</div>
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div class="dropzone-icon">🎬</div>
+      <div class="dropzone-text">Drop your .mov or .mp4 file here, or click to browse</div>
+      <div class="dropzone-sub">Any size — audio is extracted server-side, no pre-processing needed</div>
+    </div>
+    <input type="file" id="fileInput" class="file-input" accept="video/*,audio/*" onchange="handleFile(event)" />
+    <div class="file-selected hidden" id="fileSelected">
+      <div class="file-info">
+        <div class="file-icon">🎬</div>
+        <div>
+          <div class="file-name" id="fileName"></div>
+          <div class="file-size" id="fileSize"></div>
+        </div>
+      </div>
+      <button class="file-remove" onclick="removeFile()">Remove</button>
+    </div>
+  </div>
+  <button class="analyze-btn" id="processBtn" onclick="processFile()" disabled>TRANSCRIBE + FIND CLIPS</button>
+  <div class="loading-state hidden" id="loadingState">
+    <div class="loading-bar"><div class="loading-bar-fill indeterminate"></div></div>
+    <div class="loading-label" id="loadingLabel">Processing...</div>
+    <div class="loading-step" id="loadingStep"></div>
+  </div>
+  <div class="error-box hidden" id="errorBox"></div>
+  <div id="results" class="hidden" style="margin-top:32px;">
+    <div class="results-header">
+      <div>
+        <div class="st-label">Suggested Title</div>
+        <div class="st-value" id="streamTitle"></div>
+      </div>
+      <button class="export-btn" onclick="exportSheet()">Export Clip Sheet</button>
+    </div>
+    <div class="clips-grid" id="clipsGrid"></div>
+  </div>
+</div>
+<script>
+const TYPE_META = {
+  prediction: { label: 'Live Prediction',  color: '#ce93d8', icon: '📈' },
+  entry_exit: { label: 'Trade Entry/Exit', color: '#00ff87', icon: '⚡' },
+  reaction:   { label: 'Reaction',         color: '#ff6b35', icon: '🔥' },
+  teaching:   { label: 'Teaching',         color: '#4fc3f7', icon: '🎯' },
+  prop_firm:  { label: 'Prop Firm',        color: '#ffd700', icon: '💰' },
+};
+let currentClips = [], currentTitle = '', selectedFile = null;
+
+const dz = document.getElementById('dropzone');
+['dragover','dragenter'].forEach(evt => dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.add('dragover'); }));
+['dragleave','drop'].forEach(evt => dz.addEventListener(evt, e => { e.preventDefault(); dz.classList.remove('dragover'); }));
+dz.addEventListener('drop', e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) selectFile(f); });
+function handleFile(e) { const f = e.target.files[0]; if (f) selectFile(f); }
+function selectFile(f) {
+  selectedFile = f;
+  document.getElementById('fileName').textContent = f.name;
+  document.getElementById('fileSize').textContent = formatBytes(f.size);
+  document.getElementById('fileSelected').classList.remove('hidden');
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('processBtn').disabled = false;
+}
+function removeFile() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('fileSelected').classList.add('hidden');
+  document.getElementById('dropzone').classList.remove('hidden');
+  document.getElementById('processBtn').disabled = true;
+}
+function formatBytes(b) {
+  if (b < 1048576) return (b/1024).toFixed(0)+' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
+  return (b/1073741824).toFixed(2)+' GB';
+}
+function formatTime(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = Math.floor(s%60);
+  if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  return `${m}:${String(sec).padStart(2,'0')}`;
+}
+function showError(msg) { const e = document.getElementById('errorBox'); e.textContent = '⚠ '+msg; e.classList.remove('hidden'); }
+function hideError() { document.getElementById('errorBox').classList.add('hidden'); }
+function setLoading(on, label, step) {
+  document.getElementById('loadingState').classList.toggle('hidden', !on);
+  if (label !== undefined) document.getElementById('loadingLabel').textContent = label;
+  if (step !== undefined) document.getElementById('loadingStep').textContent = step;
+}
+async function processFile() {
+  if (!selectedFile) return;
+  hideError();
+  document.getElementById('results').classList.add('hidden');
+  document.getElementById('processBtn').disabled = true;
+  try {
+    setLoading(true, 'Uploading & transcribing...', `${selectedFile.name} (${formatBytes(selectedFile.size)}) — keep this tab open, this takes a few minutes`);
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    const transcribeRes = await fetch('/api/transcribe', { method: 'POST', body: formData });
+    const transcribeText = await transcribeRes.text();
+    let transcribeData;
+    try { transcribeData = JSON.parse(transcribeText); } catch { throw new Error('Server error: ' + transcribeText.slice(0, 200)); }
+    if (!transcribeRes.ok) throw new Error(transcribeData.error || 'Transcription failed.');
+    setLoading(true, 'Finding viral moments...', 'Applying Hook → Retain → Reward framework');
+    const analyzeRes = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ transcript: transcribeData.transcript }),
+    });
+    const analyzeText = await analyzeRes.text();
+    let analyzeData;
+    try { analyzeData = JSON.parse(analyzeText); } catch { throw new Error('Analysis error: ' + analyzeText.slice(0, 200)); }
+    if (!analyzeRes.ok) throw new Error(analyzeData.error || 'Analysis failed.');
+    currentClips = analyzeData.clips || [];
+    currentTitle = analyzeData.stream_title || '';
+    renderResults();
+  } catch (err) {
+    showError(err.message || 'Something went wrong.');
+  } finally {
+    setLoading(false);
+    document.getElementById('processBtn').disabled = false;
+  }
+}
+function renderResults() {
+  if (!currentClips.length) { showError('No clips identified.'); return; }
+  document.getElementById('streamTitle').textContent = currentTitle;
+  const grid = document.getElementById('clipsGrid');
+  grid.innerHTML = '';
+  currentClips.forEach((clip, i) => {
+    const meta = TYPE_META[clip.type] || TYPE_META.entry_exit;
+    const card = document.createElement('div');
+    card.className = 'clip-card';
+    card.style.setProperty('--accent', meta.color);
+    card.innerHTML = `
+      <div class="clip-header">
+        <div class="clip-index">#${String(i+1).padStart(2,'0')}</div>
+        <div class="clip-badge" style="color:${meta.color};border-color:${meta.color}">${meta.icon} ${meta.label}</div>
+        <div class="clip-viral-score"><span class="viral-label">Viral Score</span><span class="viral-value" style="color:${meta.color}">${clip.viral_score}/10</span></div>
+      </div>
+      <div class="clip-title">${clip.title}</div>
+      <div class="clip-why">${clip.why_viral}</div>
+      <div class="clip-footer">
+        <div class="clip-timestamp">
+          <span class="ts-label">START</span>
+          <span class="ts-value" style="color:${meta.color}">${formatTime(clip.start_seconds)}</span>
+          ${clip.end_seconds ? `<span class="ts-sep">→</span><span class="ts-label">END</span><span class="ts-value">${formatTime(clip.end_seconds)}</span>` : ''}
+        </div>
+        <button class="copy-btn" style="border-color:${meta.color};color:${meta.color}" onclick="copyTs(this,'${formatTime(clip.start_seconds)}')">Copy Timestamp</button>
+      </div>
+      <div class="clip-meta-row">
+        ${clip.hook_suggestion ? `<div class="clip-meta-item"><span class="meta-label">⚡ HOOK</span><span class="meta-text">"${clip.hook_suggestion}"</span></div>` : ''}
+        ${clip.payoff ? `<div class="clip-meta-item"><span class="meta-label">🎯 PAYOFF</span><span class="meta-text">${clip.payoff}</span></div>` : ''}
+        ${clip.cta_suggestion ? `<div class="clip-meta-item"><span class="meta-label">📣 CTA</span><span class="meta-text">"${clip.cta_suggestion}"</span></div>` : ''}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  document.getElementById('results').classList.remove('hidden');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function copyTs(btn, ts) {
+  navigator.clipboard.writeText(ts).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = orig, 2000);
+  });
+}
+function exportSheet() {
+  const lines = [
+    'TRADING PATIENTLY — CLIP SHEET',
+    `Stream: ${currentTitle}`,
+    `Generated: ${new Date().toLocaleDateString()}`,
+    '',
+    ...currentClips.map((c, i) => [
+      `CLIP #${String(i+1).padStart(2,'0')} — ${c.title}`,
+      `Type: ${c.type.replace('_',' ').toUpperCase()} | Score: ${c.viral_score}/10`,
+      `Timestamp: ${formatTime(c.start_seconds)} → ${formatTime(c.end_seconds || c.start_seconds+120)}`,
+      `Why: ${c.why_viral}`,
+      `Hook: "${c.hook_suggestion}"`,
+      `Payoff: ${c.payoff}`,
+      `CTA: "${c.cta_suggestion}"`,
+      '',
+    ].join('\n')),
+  ];
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.querySelector('.export-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied to Clipboard';
+    setTimeout(() => btn.textContent = orig, 2500);
+  });
+}
+</script>
+</body>
+</html>
