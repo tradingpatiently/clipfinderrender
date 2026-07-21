@@ -15,6 +15,11 @@
     .header-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 8vw, 72px); line-height: 0.9; letter-spacing: 0.02em; color: #fff; }
     .header-title span { color: #00ff87; }
     .header-sub { margin-top: 12px; font-size: 13px; color: #666; line-height: 1.6; }
+    .how-to { background: #0a0d10; border: 1px solid #1a1f24; border-radius: 4px; padding: 16px 20px; margin-bottom: 20px; }
+    .how-to-title { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+    .how-to ol { padding-left: 16px; }
+    .how-to li { font-size: 12px; color: #555; line-height: 1.9; }
+    .how-to li span { color: #00ff87; }
     .section { margin-bottom: 24px; }
     .field-label { font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 8px; }
     .dropzone { background: #0e1114; border: 2px dashed #1e2328; border-radius: 6px; padding: 48px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
@@ -78,19 +83,30 @@
   <div class="header">
     <div class="header-eyebrow">Trading Patiently</div>
     <h1 class="header-title">CLIP<br /><span>FINDER</span></h1>
-    <p class="header-sub">Drop your raw stream VOD — the server extracts audio, transcribes it, and finds your best viral moments automatically.</p>
+    <p class="header-sub">Extract audio from your VOD using the bat script, drop the MP3 here, and AI finds your best viral moments.</p>
   </div>
+
+  <div class="how-to">
+    <div class="how-to-title">Daily Workflow</div>
+    <ol>
+      <li>Drag your <span>.mov or .mp4</span> onto the <span>Extract Audio.bat</span> script</li>
+      <li>Wait 3-8 minutes — an <span>.mp3</span> file appears next to your video</li>
+      <li>Drop that <span>.mp3</span> below and hit <span>Transcribe + Find Clips</span></li>
+      <li>Get your clip sheet in a few minutes</li>
+    </ol>
+  </div>
+
   <div class="section">
-    <div class="field-label">Stream VOD File</div>
+    <div class="field-label">Extracted Audio File (MP3)</div>
     <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
-      <div class="dropzone-icon">🎬</div>
-      <div class="dropzone-text">Drop your .mov or .mp4 file here, or click to browse</div>
-      <div class="dropzone-sub">Any size — audio is extracted server-side, no pre-processing needed</div>
+      <div class="dropzone-icon">🎵</div>
+      <div class="dropzone-text">Drop your extracted MP3 here, or click to browse</div>
+      <div class="dropzone-sub">Run the Extract Audio script first to get the MP3 from your video</div>
     </div>
-    <input type="file" id="fileInput" class="file-input" accept="video/*,audio/*" onchange="handleFile(event)" />
+    <input type="file" id="fileInput" class="file-input" accept="audio/mpeg,audio/mp3,.mp3" onchange="handleFile(event)" />
     <div class="file-selected hidden" id="fileSelected">
       <div class="file-info">
-        <div class="file-icon">🎬</div>
+        <div class="file-icon">🎵</div>
         <div>
           <div class="file-name" id="fileName"></div>
           <div class="file-size" id="fileSize"></div>
@@ -99,13 +115,17 @@
       <button class="file-remove" onclick="removeFile()">Remove</button>
     </div>
   </div>
+
   <button class="analyze-btn" id="processBtn" onclick="processFile()" disabled>TRANSCRIBE + FIND CLIPS</button>
+
   <div class="loading-state hidden" id="loadingState">
     <div class="loading-bar"><div class="loading-bar-fill indeterminate"></div></div>
     <div class="loading-label" id="loadingLabel">Processing...</div>
     <div class="loading-step" id="loadingStep"></div>
   </div>
+
   <div class="error-box hidden" id="errorBox"></div>
+
   <div id="results" class="hidden" style="margin-top:32px;">
     <div class="results-header">
       <div>
@@ -117,6 +137,7 @@
     <div class="clips-grid" id="clipsGrid"></div>
   </div>
 </div>
+
 <script>
 const TYPE_META = {
   prediction: { label: 'Live Prediction',  color: '#ce93d8', icon: '📈' },
@@ -170,7 +191,7 @@ async function processFile() {
   document.getElementById('results').classList.add('hidden');
   document.getElementById('processBtn').disabled = true;
   try {
-    setLoading(true, 'Uploading & transcribing...', `${selectedFile.name} (${formatBytes(selectedFile.size)}) — keep this tab open, this takes a few minutes`);
+    setLoading(true, 'Uploading & transcribing...', `${selectedFile.name} (${formatBytes(selectedFile.size)}) — keep this tab open`);
     const formData = new FormData();
     formData.append('file', selectedFile);
     const transcribeRes = await fetch('/api/transcribe', { method: 'POST', body: formData });
